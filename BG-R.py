@@ -1,6 +1,6 @@
 import tkinter as tk
 # from rembg import remove
-# from PIL import Image
+from PIL import Image, ImageTk
 
 root = tk.Tk()
 root.geometry("720x512")
@@ -9,7 +9,7 @@ root.title("BG-Remover")
 label = tk.Label(root, text="BG-Remover", font=("Arial", 27))
 label.pack(padx=20, pady=10)
 
-canvas = tk.Canvas(root, width=700, height=450, bg="white")
+canvas = tk.Canvas(root, width=720, height=512, bg="white")
 canvas.pack()
 
 
@@ -32,6 +32,28 @@ def create_rounded_rectangle(canvas, left_x, top_y, right_x, bottom_y, corner_ra
     return canvas.create_polygon(points, smooth=True, **options)
 
 
+'''------------- Loading image ---------------'''
+# Arrow pointing to the result
+Arrow = Image.open("assets/img/arrow.png")
+Arrow_photo = ImageTk.PhotoImage(Arrow)
+
+canvas.create_image(
+    355, 200,
+    image=Arrow_photo
+)
+
+#  Add_image
+
+Add_image = Image.open("assets/img/download_icon.png")
+Add_image_photo = ImageTk.PhotoImage(Add_image)
+
+canvas.create_image(
+    255, 200,
+    image=Add_image_photo
+)
+'''--------------------------------------------'''
+
+'''------------- Shaping The Design ---------------'''
 # Left rectangle
 create_rounded_rectangle(
     canvas,
@@ -77,32 +99,32 @@ create_rounded_rectangle(
 )
 
 
-canvas.create_text(
-    175, 200,
-    text="Original Image",
-    font=("Arial", 16),
-    fill="black"
-)
+# canvas.create_text(
+#     175, 200,
+#     text="Original Image",
+#     font=("Arial", 16),
+#     fill="black"
+# )
 
 
-canvas.create_text(
-    525, 200,
-    text="Result",
-    font=("Arial", 16),
-    fill="black"
-)
+# canvas.create_text(
+#     525, 200,
+#     text="Result",
+#     font=("Arial", 16),
+#     fill="black"
+# )
 
 canvas.create_text(
     353, 375,
-    text="Result",
-    font=("Arial", 16),
+    text="Remove",
+    font=("Arial", 14),
     fill="black"
 )
 
 canvas.create_text(
-    215, 430,
+    200, 430,
     text="developed by Katheri Saleh using ",
-    font=("Arial", 16),
+    font=("Arial", 14),
     fill="black"
 )
 
@@ -117,16 +139,40 @@ canvas.create_text(
 canvas.create_text(
     500, 430,
     text="Contacts: 778484033",
-    font=("Arial", 16),
+    font=("Arial", 14),
     fill="black"
 )
 # Contacts: 778484033
 canvas.create_text(
     660, 430,
-    text=" GH: Katheri0",
+    text=" GH:Katheri0",
     font=("Arial", 14),
     fill="black"
 )
-
 # Katheri0
+
+'''------------- Loading image ---------------'''
+
+#  downlaod_image
+downlaod_image = Image.open("assets/img/download_icon.png")
+downlaod_image_photo = ImageTk.PhotoImage(downlaod_image)
+
+canvas.create_image(
+    525, 200,
+    image=downlaod_image_photo
+
+)
+
+#  Add_image
+Add_image = Image.open("assets/img/Logo.png")
+resized_logo_image = Add_image.resize((80, 80))
+Add_image_photo = ImageTk.PhotoImage(resized_logo_image)
+
+canvas.create_image(
+    175, 200,
+    image=Add_image_photo
+)
+'''--------------------------------------------'''
+'''----------------------------'''
+
 root.mainloop()
