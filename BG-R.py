@@ -46,6 +46,7 @@ create_rounded_rectangle(
     dash=(10, 2)
 )
 
+# Right rectangle
 create_rounded_rectangle(
     canvas,
     left_x=400,
@@ -60,5 +61,72 @@ create_rounded_rectangle(
 
 )
 
+# btn rectangle
+create_rounded_rectangle(
+    canvas,
+    left_x=270,
+    top_y=350,
+    right_x=430,
+    bottom_y=400,
+    corner_radius=40,
+    fill="#FFF0CF",
+    outline="black",
+    width=2,
+    dash=(10, 2)
 
+)
+
+
+canvas.create_text(
+    175, 200,
+    text="Original Image",
+    font=("Arial", 16),
+    fill="black"
+)
+
+
+canvas.create_text(
+    525, 200,
+    text="Result",
+    font=("Arial", 16),
+    fill="black"
+)
+
+canvas.create_text(
+    353, 375,
+    text="Result",
+    font=("Arial", 16),
+    fill="black"
+)
+
+canvas.create_text(
+    215, 430,
+    text="developed by Katheri Saleh using ",
+    font=("Arial", 16),
+    fill="black"
+)
+
+canvas.create_text(
+    30, 430,
+    text="</>",
+    font=("Arial", 25),
+    fill="black"
+)
+# developed by Katheri Saleh using
+
+canvas.create_text(
+    500, 430,
+    text="Contacts: 778484033",
+    font=("Arial", 16),
+    fill="black"
+)
+# Contacts: 778484033
+canvas.create_text(
+    660, 430,
+    text=" GH: Katheri0",
+    font=("Arial", 14),
+    fill="black"
+)
+
+# Katheri0
 root.mainloop()
