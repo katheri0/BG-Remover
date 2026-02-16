@@ -137,15 +137,15 @@ canvas.create_text(
 # developed by Katheri Saleh using
 
 canvas.create_text(
-    500, 430,
-    text="Contacts: 778484033",
+    505, 430,
+    text="Contacts:     778484033",
     font=("Arial", 14),
     fill="black"
 )
 # Contacts: 778484033
 canvas.create_text(
-    660, 430,
-    text=" GH:Katheri0",
+    680, 430,
+    text="Katheri0",
     font=("Arial", 14),
     fill="black"
 )
@@ -171,6 +171,26 @@ Add_image_photo = ImageTk.PhotoImage(resized_logo_image)
 canvas.create_image(
     175, 200,
     image=Add_image_photo
+)
+
+#  whatsapp
+whatsapp = Image.open("assets/img/whatsapp.png")
+resized_logo_image = whatsapp.resize((24, 24))
+whatsapp_photo = ImageTk.PhotoImage(resized_logo_image)
+
+canvas.create_image(
+    495, 430,
+    image=whatsapp_photo
+)
+
+#  Github
+Github = Image.open("assets/img/Github.png")
+resized_logo_image = Github.resize((24, 24))
+Github_photo = ImageTk.PhotoImage(resized_logo_image)
+
+canvas.create_image(
+    635, 430,
+    image=Github_photo
 )
 '''--------------------------------------------'''
 '''----------------------------'''
