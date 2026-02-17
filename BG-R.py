@@ -6,7 +6,9 @@ root = tk.Tk()
 root.geometry("720x512")
 root.title("BG-Remover")
 
-label = tk.Label(root, text="BG-Remover", font=("Arial", 27))
+root.configure(bg="#FFFFFF")
+
+label = tk.Label(root, text="BG-Remover", font=("Arial", 27), bg="#FFFFFF")
 label.pack(padx=20, pady=10)
 
 canvas = tk.Canvas(root, width=720, height=512, bg="white")
@@ -99,12 +101,12 @@ create_rounded_rectangle(
 )
 
 
-# canvas.create_text(
-#     175, 200,
-#     text="Original Image",
-#     font=("Arial", 16),
-#     fill="black"
-# )
+canvas.create_text(
+    175, 260,
+    text="Original Image",
+    font=("Arial", 16),
+    fill="black"
+)
 
 
 # canvas.create_text(
@@ -155,7 +157,8 @@ canvas.create_text(
 
 #  downlaod_image
 downlaod_image = Image.open("assets/img/download_icon.png")
-downlaod_image_photo = ImageTk.PhotoImage(downlaod_image)
+resized_logo_image = downlaod_image.resize((50, 35))
+downlaod_image_photo = ImageTk.PhotoImage(resized_logo_image)
 
 canvas.create_image(
     525, 200,
@@ -165,7 +168,7 @@ canvas.create_image(
 
 #  Add_image
 Add_image = Image.open("assets/img/Logo.png")
-resized_logo_image = Add_image.resize((80, 80))
+resized_logo_image = Add_image.resize((40, 40))
 Add_image_photo = ImageTk.PhotoImage(resized_logo_image)
 
 canvas.create_image(
@@ -191,6 +194,16 @@ Github_photo = ImageTk.PhotoImage(resized_logo_image)
 canvas.create_image(
     635, 430,
     image=Github_photo
+)
+
+#  python
+python = Image.open("assets/img/python.png")
+resized_logo_image = python.resize((24, 24))
+python_photo = ImageTk.PhotoImage(resized_logo_image)
+
+canvas.create_image(
+    355, 430,
+    image=python_photo
 )
 '''--------------------------------------------'''
 '''----------------------------'''
