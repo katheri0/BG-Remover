@@ -5,9 +5,9 @@ from rembg import remove
 from PIL import Image
 
 # the path of the img
-inputPath = "thePathOfTheImg.png"
+inputPath = "D:/do_projects/Github-K0/BG-Remover/tests/inputs/a.jpg"
 # the path of the output (the img with the background removed ) 
-outputPath = "thePathOfTheOutputImg.png"
+outputPath = "D:/do_projects/Github-K0/BG-Remover/tests/outputs/a.png"
 
 # getting the img ready to oprate on it 
 input = Image.open(inputPath)

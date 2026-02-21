@@ -1,5 +1,5 @@
 import tkinter as tk
-# from rembg import remove
+from rembg import remove
 from PIL import Image, ImageTk
 
 root = tk.Tk()
@@ -103,7 +103,7 @@ create_rounded_rectangle(
 
 canvas.create_text(
     175, 260,
-    text="Original Image",
+    text="Upload Image",
     font=("Arial", 16),
     fill="black"
 )
