@@ -1,5 +1,5 @@
 import tkinter as tk
-from rembg import remove
+# from rembg import remove
 from PIL import Image, ImageTk
 
 root = tk.Tk()
@@ -182,7 +182,7 @@ resized_logo_image = whatsapp.resize((24, 24))
 whatsapp_photo = ImageTk.PhotoImage(resized_logo_image)
 
 canvas.create_image(
-    495, 430,
+    497, 430,
     image=whatsapp_photo
 )
 
@@ -192,7 +192,7 @@ resized_logo_image = Github.resize((24, 24))
 Github_photo = ImageTk.PhotoImage(resized_logo_image)
 
 canvas.create_image(
-    635, 430,
+    634, 430,
     image=Github_photo
 )
 
