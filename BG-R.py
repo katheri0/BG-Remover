@@ -2,18 +2,21 @@ import tkinter as tk
 # from rembg import remove
 from PIL import Image, ImageTk
 
-root = tk.Tk()
-root.geometry("720x512")
-root.title("BG-Remover")
 
-root.configure(bg="#FFFFFF")
+# ==========================
+# Window Configuration
+# ==========================
 
-label = tk.Label(root, text="BG-Remover", font=("Arial", 27), bg="#FFFFFF")
-label.pack(padx=20, pady=10)
+WINDOW_WIDTH = 720
+WINDOW_HEIGHT = 512
+WINDOW_BACKGROUND_COLOR = "#FFFFFF"
+TITLE_FONT = ("Arial", 27)
+DEFAULT_FONT = ("Arial", 14)
 
-canvas = tk.Canvas(root, width=720, height=512, bg="white")
-canvas.pack()
 
+# ==========================
+# Helper Functions
+# ==========================
 
 def create_rounded_rectangle(canvas, left_x, top_y, right_x, bottom_y, corner_radius=25, **options):
     points = [
@@ -30,35 +33,53 @@ def create_rounded_rectangle(canvas, left_x, top_y, right_x, bottom_y, corner_ra
         left_x, top_y + corner_radius,
         left_x, top_y
     ]
-
     return canvas.create_polygon(points, smooth=True, **options)
 
 
-'''------------- Loading image ---------------'''
-# Arrow pointing to the result
-Arrow = Image.open("assets/img/arrow.png")
-Arrow_photo = ImageTk.PhotoImage(Arrow)
+def load_canvas_image(canvas, image_path, x_position, y_position, width=None, height=None):
+    image = Image.open(image_path)
 
-canvas.create_image(
-    355, 200,
-    image=Arrow_photo
+    if width and height:
+        image = image.resize((width, height))
+
+    photo_image = ImageTk.PhotoImage(image)
+    canvas.create_image(x_position, y_position, image=photo_image)
+
+    return photo_image  # prevent garbage collection
+
+
+# ==========================
+# Main Application
+# ==========================
+
+root = tk.Tk()
+root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
+root.title("BG-Remover")
+root.configure(bg=WINDOW_BACKGROUND_COLOR)
+
+title_label = tk.Label(
+    root,
+    text="BG-Remover",
+    font=TITLE_FONT,
+    bg=WINDOW_BACKGROUND_COLOR
 )
+title_label.pack(padx=20, pady=10)
 
-#  Add_image
-
-Add_image = Image.open("assets/img/download_icon.png")
-Add_image_photo = ImageTk.PhotoImage(Add_image)
-
-canvas.create_image(
-    255, 200,
-    image=Add_image_photo
+main_canvas = tk.Canvas(
+    root,
+    width=WINDOW_WIDTH,
+    height=WINDOW_HEIGHT,
+    bg="white"
 )
-'''--------------------------------------------'''
+main_canvas.pack()
 
-'''------------- Shaping The Design ---------------'''
-# Left rectangle
+
+# ==========================
+# Layout - Rectangles
+# ==========================
+
 create_rounded_rectangle(
-    canvas,
+    main_canvas,
     left_x=50,
     top_y=100,
     right_x=300,
@@ -70,9 +91,8 @@ create_rounded_rectangle(
     dash=(10, 2)
 )
 
-# Right rectangle
 create_rounded_rectangle(
-    canvas,
+    main_canvas,
     left_x=400,
     top_y=100,
     right_x=650,
@@ -82,12 +102,10 @@ create_rounded_rectangle(
     outline="black",
     width=2,
     dash=(10, 2)
-
 )
 
-# btn rectangle
 create_rounded_rectangle(
-    canvas,
+    main_canvas,
     left_x=270,
     top_y=350,
     right_x=430,
@@ -97,115 +115,92 @@ create_rounded_rectangle(
     outline="black",
     width=2,
     dash=(10, 2)
-
 )
 
 
-canvas.create_text(
-    175, 260,
-    text="Upload Image",
-    font=("Arial", 16),
-    fill="black"
-)
+# ==========================
+# Text Elements
+# ==========================
 
+main_canvas.create_text(175, 260, text="Upload Image", font=("Arial", 16))
+main_canvas.create_text(353, 375, text="Remove", font=("Arial", 14))
 
-# canvas.create_text(
-#     525, 200,
-#     text="Result",
-#     font=("Arial", 16),
-#     fill="black"
-# )
-
-canvas.create_text(
-    353, 375,
-    text="Remove",
-    font=("Arial", 14),
-    fill="black"
-)
-
-canvas.create_text(
+main_canvas.create_text(
     200, 430,
-    text="developed by Katheri Saleh using ",
-    font=("Arial", 14),
-    fill="black"
+    text="developed by Katheri Saleh using",
+    font=DEFAULT_FONT
 )
 
-canvas.create_text(
-    30, 430,
-    text="</>",
-    font=("Arial", 25),
-    fill="black"
-)
-# developed by Katheri Saleh using
+main_canvas.create_text(30, 430, text="</>", font=("Arial", 25))
 
-canvas.create_text(
+main_canvas.create_text(
     505, 430,
-    text="Contacts:     778484033",
-    font=("Arial", 14),
-    fill="black"
+    text="Contacts:      778484033",
+    font=DEFAULT_FONT
 )
-# Contacts: 778484033
-canvas.create_text(
+
+main_canvas.create_text(
     680, 430,
     text="Katheri0",
-    font=("Arial", 14),
-    fill="black"
-)
-# Katheri0
-
-'''------------- Loading image ---------------'''
-
-#  downlaod_image
-downlaod_image = Image.open("assets/img/download_icon.png")
-resized_logo_image = downlaod_image.resize((50, 35))
-downlaod_image_photo = ImageTk.PhotoImage(resized_logo_image)
-
-canvas.create_image(
-    525, 200,
-    image=downlaod_image_photo
-
+    font=DEFAULT_FONT
 )
 
-#  Add_image
-Add_image = Image.open("assets/img/Logo.png")
-resized_logo_image = Add_image.resize((40, 40))
-Add_image_photo = ImageTk.PhotoImage(resized_logo_image)
 
-canvas.create_image(
-    175, 200,
-    image=Add_image_photo
+# ==========================
+# Image Assets
+# ==========================
+
+arrow_photo = load_canvas_image(
+    main_canvas,
+    "assets/img/arrow.png",
+    x_position=355,
+    y_position=200
 )
 
-#  whatsapp
-whatsapp = Image.open("assets/img/whatsapp.png")
-resized_logo_image = whatsapp.resize((24, 24))
-whatsapp_photo = ImageTk.PhotoImage(resized_logo_image)
-
-canvas.create_image(
-    497, 430,
-    image=whatsapp_photo
+upload_icon_photo = load_canvas_image(
+    main_canvas,
+    "assets/img/Logo.png",
+    x_position=175,
+    y_position=200,
+    width=40,
+    height=40
 )
 
-#  Github
-Github = Image.open("assets/img/Github.png")
-resized_logo_image = Github.resize((24, 24))
-Github_photo = ImageTk.PhotoImage(resized_logo_image)
-
-canvas.create_image(
-    634, 430,
-    image=Github_photo
+download_icon_photo = load_canvas_image(
+    main_canvas,
+    "assets/img/download_icon.png",
+    x_position=525,
+    y_position=200,
+    width=50,
+    height=35
 )
 
-#  python
-python = Image.open("assets/img/python.png")
-resized_logo_image = python.resize((24, 24))
-python_photo = ImageTk.PhotoImage(resized_logo_image)
-
-canvas.create_image(
-    355, 430,
-    image=python_photo
+whatsapp_icon_photo = load_canvas_image(
+    main_canvas,
+    "assets/img/whatsapp.png",
+    x_position=497,
+    y_position=430,
+    width=24,
+    height=24
 )
-'''--------------------------------------------'''
-'''----------------------------'''
+
+github_icon_photo = load_canvas_image(
+    main_canvas,
+    "assets/img/Github.png",
+    x_position=634,
+    y_position=430,
+    width=24,
+    height=24
+)
+
+python_icon_photo = load_canvas_image(
+    main_canvas,
+    "assets/img/python.png",
+    x_position=355,
+    y_position=430,
+    width=24,
+    height=24
+)
+
 
 root.mainloop()
