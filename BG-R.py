@@ -12,8 +12,10 @@ WINDOW_HEIGHT = 512
 WINDOW_BACKGROUND_COLOR = "#FFFFFF"
 TITLE_FONT = ("Arial", 27)
 DEFAULT_FONT = ("Arial", 14)
-
-
+REMOVE_BUTTON_DEFAULT_COLOR = "#FFF0CF"
+REMOVE_BUTTON_HOVER_COLOR = "#F7D88A"  # slightly darker
+UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR = "#FFF0CF"
+UPLOAD__DOWNLOAD_AREA_HOVER_COLOR = "#FDE6A8"
 # ==========================
 # Helper Functions
 # ==========================
@@ -78,7 +80,7 @@ main_canvas.pack()
 # Layout - Rectangles
 # ==========================
 
-create_rounded_rectangle(
+upload_area_id = create_rounded_rectangle(
     main_canvas,
     left_x=50,
     top_y=100,
@@ -90,8 +92,7 @@ create_rounded_rectangle(
     width=2,
     dash=(10, 2)
 )
-
-create_rounded_rectangle(
+download_area_id = create_rounded_rectangle(
     main_canvas,
     left_x=400,
     top_y=100,
@@ -104,7 +105,7 @@ create_rounded_rectangle(
     dash=(10, 2)
 )
 
-create_rounded_rectangle(
+remove_button_id = create_rounded_rectangle(
     main_canvas,
     left_x=270,
     top_y=350,
@@ -144,6 +145,57 @@ main_canvas.create_text(
     text="Katheri0",
     font=DEFAULT_FONT
 )
+
+# ==========================
+# Hover Elements
+# ==========================
+
+# ****************
+# remove button
+# ****************
+
+def on_remove_button_enter(event):
+    main_canvas.itemconfig(remove_button_id, fill=REMOVE_BUTTON_HOVER_COLOR)
+    root.config(cursor="hand2")
+
+
+def on_remove_button_leave(event):
+    main_canvas.itemconfig(remove_button_id, fill=UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR)
+    root.config(cursor="")
+
+main_canvas.tag_bind(remove_button_id, "<Enter>", on_remove_button_enter)
+main_canvas.tag_bind(remove_button_id, "<Leave>", on_remove_button_leave)
+
+# ****************
+# upload area
+# ****************
+def on_upload_area_enter(event):
+    main_canvas.itemconfig(upload_area_id, fill= UPLOAD__DOWNLOAD_AREA_HOVER_COLOR)
+    root.config(cursor="hand2")
+
+
+def on_upload_area_leave(event):
+    main_canvas.itemconfig(upload_area_id, fill=UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR)
+    root.config(cursor="")
+
+main_canvas.tag_bind(upload_area_id, "<Enter>", on_upload_area_enter)
+main_canvas.tag_bind(upload_area_id, "<Leave>", on_upload_area_leave)
+
+
+# ****************
+# download area
+# ****************
+def on_download_area_enter(event):
+    main_canvas.itemconfig(download_area_id, fill=UPLOAD__DOWNLOAD_AREA_HOVER_COLOR)
+    root.config(cursor="hand2")
+
+
+def on_download_area_leave(event):
+    main_canvas.itemconfig(download_area_id, fill=UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR)
+    root.config(cursor="")
+
+main_canvas.tag_bind(download_area_id, "<Enter>", on_download_area_enter)
+main_canvas.tag_bind(download_area_id, "<Leave>", on_download_area_leave)
 
 
 # ==========================
