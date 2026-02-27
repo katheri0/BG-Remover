@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 
 
 # ==========================
-# Window Configuration
+# Window Configuration upload 
 # ==========================
 
 WINDOW_WIDTH = 720
@@ -123,8 +123,8 @@ remove_button_id = create_rounded_rectangle(
 # Text Elements
 # ==========================
 
-main_canvas.create_text(175, 260, text="Upload Image", font=("Arial", 16))
-main_canvas.create_text(353, 375, text="Remove", font=("Arial", 14))
+Upload_Image_text_id = main_canvas.create_text(175, 260, text="Upload Image", font=("Arial", 16))
+remove_text_id = main_canvas.create_text(353, 375, text="Remove", font=("Arial", 14))
 
 main_canvas.create_text(
     200, 430,
@@ -181,7 +181,13 @@ def on_upload_area_leave(event):
 main_canvas.tag_bind(upload_area_id, "<Enter>", on_upload_area_enter)
 main_canvas.tag_bind(upload_area_id, "<Leave>", on_upload_area_leave)
 
+main_canvas.addtag_withtag("remove_button", remove_button_id)
+main_canvas.addtag_withtag("remove_button", remove_text_id)
+main_canvas.tag_bind("remove_button", "<Enter>", on_remove_button_enter)
 
+# main_canvas.addtag_withtag("upload_area", upload_area_id)
+# main_canvas.addtag_withtag("upload_area", Upload_Image_text_id)
+# main_canvas.tag_bind("upload_area", "<Enter>", on_remove_button_enter)
 # ****************
 # download area
 # ****************
