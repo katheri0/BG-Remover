@@ -1,21 +1,25 @@
 import tkinter as tk
-# from rembg import remove
 from PIL import Image, ImageTk
 
 
 # ==========================
-# Window Configuration upload 
+# Window Configuration
 # ==========================
 
 WINDOW_WIDTH = 720
 WINDOW_HEIGHT = 512
 WINDOW_BACKGROUND_COLOR = "#FFFFFF"
+
+UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR = "#FFF0CF"
+UPLOAD_DOWNLOAD_AREA_HOVER_COLOR = "#FDE6A8"
+
+REMOVE_BUTTON_DEFAULT_COLOR = "#FFF0CF"
+REMOVE_BUTTON_HOVER_COLOR = "#F7D88A"
+
 TITLE_FONT = ("Arial", 27)
 DEFAULT_FONT = ("Arial", 14)
-REMOVE_BUTTON_DEFAULT_COLOR = "#FFF0CF"
-REMOVE_BUTTON_HOVER_COLOR = "#F7D88A"  # slightly darker
-UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR = "#FFF0CF"
-UPLOAD__DOWNLOAD_AREA_HOVER_COLOR = "#FDE6A8"
+
+
 # ==========================
 # Helper Functions
 # ==========================
@@ -45,9 +49,28 @@ def load_canvas_image(canvas, image_path, x_position, y_position, width=None, he
         image = image.resize((width, height))
 
     photo_image = ImageTk.PhotoImage(image)
-    canvas.create_image(x_position, y_position, image=photo_image)
+    image_id = canvas.create_image(x_position, y_position, image=photo_image)
 
-    return photo_image  # prevent garbage collection
+    return image_id, photo_image  # return both
+
+
+def bind_hover_group(canvas, tag_name, rectangle_id, grouped_item_ids,
+                     default_color, hover_color, root_window):
+
+    # Assign shared tag
+    for item_id in grouped_item_ids:
+        canvas.addtag_withtag(tag_name, item_id)
+
+    def on_enter(event):
+        canvas.itemconfig(rectangle_id, fill=hover_color)
+        root_window.config(cursor="hand2")
+
+    def on_leave(event):
+        canvas.itemconfig(rectangle_id, fill=default_color)
+        root_window.config(cursor="")
+
+    canvas.tag_bind(tag_name, "<Enter>", on_enter)
+    canvas.tag_bind(tag_name, "<Leave>", on_leave)
 
 
 # ==========================
@@ -82,24 +105,19 @@ main_canvas.pack()
 
 upload_area_id = create_rounded_rectangle(
     main_canvas,
-    left_x=50,
-    top_y=100,
-    right_x=300,
-    bottom_y=300,
+    50, 100, 300, 300,
     corner_radius=40,
-    fill="#FFF0CF",
+    fill=UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR,
     outline="black",
     width=2,
     dash=(10, 2)
 )
+
 download_area_id = create_rounded_rectangle(
     main_canvas,
-    left_x=400,
-    top_y=100,
-    right_x=650,
-    bottom_y=300,
+    400, 100, 650, 300,
     corner_radius=40,
-    fill="#FFF0CF",
+    fill=UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR,
     outline="black",
     width=2,
     dash=(10, 2)
@@ -107,12 +125,9 @@ download_area_id = create_rounded_rectangle(
 
 remove_button_id = create_rounded_rectangle(
     main_canvas,
-    left_x=270,
-    top_y=350,
-    right_x=430,
-    bottom_y=400,
+    270, 350, 430, 400,
     corner_radius=40,
-    fill="#FFF0CF",
+    fill=REMOVE_BUTTON_DEFAULT_COLOR,
     outline="black",
     width=2,
     dash=(10, 2)
@@ -123,8 +138,17 @@ remove_button_id = create_rounded_rectangle(
 # Text Elements
 # ==========================
 
-Upload_Image_text_id = main_canvas.create_text(175, 260, text="Upload Image", font=("Arial", 16))
-remove_text_id = main_canvas.create_text(353, 375, text="Remove", font=("Arial", 14))
+upload_text_id = main_canvas.create_text(
+    175, 260,
+    text="Upload Image",
+    font=("Arial", 16)
+)
+
+remove_text_id = main_canvas.create_text(
+    353, 375,
+    text="Remove",
+    font=("Arial", 14)
+)
 
 main_canvas.create_text(
     200, 430,
@@ -146,118 +170,90 @@ main_canvas.create_text(
     font=DEFAULT_FONT
 )
 
-# ==========================
-# Hover Elements
-# ==========================
-
-# ****************
-# remove button
-# ****************
-
-def on_remove_button_enter(event):
-    main_canvas.itemconfig(remove_button_id, fill=REMOVE_BUTTON_HOVER_COLOR)
-    root.config(cursor="hand2")
-
-
-def on_remove_button_leave(event):
-    main_canvas.itemconfig(remove_button_id, fill=UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR)
-    root.config(cursor="")
-
-main_canvas.tag_bind(remove_button_id, "<Enter>", on_remove_button_enter)
-main_canvas.tag_bind(remove_button_id, "<Leave>", on_remove_button_leave)
-
-# ****************
-# upload area
-# ****************
-def on_upload_area_enter(event):
-    main_canvas.itemconfig(upload_area_id, fill= UPLOAD__DOWNLOAD_AREA_HOVER_COLOR)
-    root.config(cursor="hand2")
-
-
-def on_upload_area_leave(event):
-    main_canvas.itemconfig(upload_area_id, fill=UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR)
-    root.config(cursor="")
-
-main_canvas.tag_bind(upload_area_id, "<Enter>", on_upload_area_enter)
-main_canvas.tag_bind(upload_area_id, "<Leave>", on_upload_area_leave)
-
-main_canvas.addtag_withtag("remove_button", remove_button_id)
-main_canvas.addtag_withtag("remove_button", remove_text_id)
-main_canvas.tag_bind("remove_button", "<Enter>", on_remove_button_enter)
-
-# main_canvas.addtag_withtag("upload_area", upload_area_id)
-# main_canvas.addtag_withtag("upload_area", Upload_Image_text_id)
-# main_canvas.tag_bind("upload_area", "<Enter>", on_remove_button_enter)
-# ****************
-# download area
-# ****************
-def on_download_area_enter(event):
-    main_canvas.itemconfig(download_area_id, fill=UPLOAD__DOWNLOAD_AREA_HOVER_COLOR)
-    root.config(cursor="hand2")
-
-
-def on_download_area_leave(event):
-    main_canvas.itemconfig(download_area_id, fill=UPLOAD__DOWNLOAD_AREA_DEFAULT_COLOR)
-    root.config(cursor="")
-
-main_canvas.tag_bind(download_area_id, "<Enter>", on_download_area_enter)
-main_canvas.tag_bind(download_area_id, "<Leave>", on_download_area_leave)
-
 
 # ==========================
 # Image Assets
 # ==========================
 
-arrow_photo = load_canvas_image(
+arrow_id, arrow_photo = load_canvas_image(
     main_canvas,
     "assets/img/arrow.png",
-    x_position=355,
-    y_position=200
+    355, 200
 )
 
-upload_icon_photo = load_canvas_image(
+upload_icon_id, upload_icon_photo = load_canvas_image(
     main_canvas,
     "assets/img/Logo.png",
-    x_position=175,
-    y_position=200,
+    175, 200,
     width=40,
     height=40
 )
 
-download_icon_photo = load_canvas_image(
+download_icon_id, download_icon_photo = load_canvas_image(
     main_canvas,
     "assets/img/download_icon.png",
-    x_position=525,
-    y_position=200,
+    525, 200,
     width=50,
     height=35
 )
 
-whatsapp_icon_photo = load_canvas_image(
+whatsapp_id, whatsapp_photo = load_canvas_image(
     main_canvas,
     "assets/img/whatsapp.png",
-    x_position=497,
-    y_position=430,
+    497, 430,
     width=24,
     height=24
 )
 
-github_icon_photo = load_canvas_image(
+github_id, github_photo = load_canvas_image(
     main_canvas,
     "assets/img/Github.png",
-    x_position=634,
-    y_position=430,
+    634, 430,
     width=24,
     height=24
 )
 
-python_icon_photo = load_canvas_image(
+python_id, python_photo = load_canvas_image(
     main_canvas,
     "assets/img/python.png",
-    x_position=355,
-    y_position=430,
+    355, 430,
     width=24,
     height=24
+)
+
+
+# ==========================
+# Hover Bindings (Automated)
+# ==========================
+
+bind_hover_group(
+    canvas=main_canvas,
+    tag_name="upload_area",
+    rectangle_id=upload_area_id,
+    grouped_item_ids=[upload_area_id, upload_text_id, upload_icon_id],
+    default_color=UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR,
+    hover_color=UPLOAD_DOWNLOAD_AREA_HOVER_COLOR,
+    root_window=root
+)
+
+bind_hover_group(
+    canvas=main_canvas,
+    tag_name="download_area",
+    rectangle_id=download_area_id,
+    grouped_item_ids=[download_area_id, download_icon_id],
+    default_color=UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR,
+    hover_color=UPLOAD_DOWNLOAD_AREA_HOVER_COLOR,
+    root_window=root
+)
+
+bind_hover_group(
+    canvas=main_canvas,
+    tag_name="remove_button",
+    rectangle_id=remove_button_id,
+    grouped_item_ids=[remove_button_id, remove_text_id],
+    default_color=REMOVE_BUTTON_DEFAULT_COLOR,
+    hover_color=REMOVE_BUTTON_HOVER_COLOR,
+    root_window=root
 )
 
 
