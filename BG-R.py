@@ -1,6 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-
+from pathlib import Path
+from background_removal_service import remove_background_from_image
+from tkinter import filedialog
 
 # ==========================
 # Window Configuration
@@ -98,6 +100,9 @@ main_canvas = tk.Canvas(
 )
 main_canvas.pack()
 
+selected_image_path = None
+selected_image_preview = None
+result_image_preview = None
 
 # ==========================
 # Layout - Rectangles
@@ -148,6 +153,12 @@ remove_text_id = main_canvas.create_text(
     353, 375,
     text="Remove",
     font=("Arial", 14)
+)
+
+main_canvas.create_text(
+    350, 40,
+    text="output image path is the same as the input path",
+    font=DEFAULT_FONT
 )
 
 main_canvas.create_text(
@@ -221,6 +232,57 @@ python_id, python_photo = load_canvas_image(
     height=24
 )
 
+# ==========================
+# Upload Logic
+# ==========================
+
+def handle_upload_click(event=None):
+    global selected_image_path, selected_image_preview
+
+    file_path = filedialog.askopenfilename(
+        filetypes=[("Image Files", "*.png *.jpg *.jpeg")]
+    )
+
+    if not file_path:
+        return
+
+    selected_image_path = file_path
+
+    image = Image.open(file_path)
+    image.thumbnail((120, 90))
+
+    selected_image_preview = ImageTk.PhotoImage(image)
+    main_canvas.create_image(175, 180, image=selected_image_preview)
+
+# ==========================
+# Remove Logic
+# ==========================
+
+
+def handle_remove_click(event=None):
+    global result_image_preview
+
+    if not selected_image_path:
+        return
+
+    input_path = Path(selected_image_path)
+    output_path = input_path.parent / f"{input_path.stem}_no_bg.png"
+
+    try:
+        result_path = remove_background_from_image(
+            str(input_path),
+            str(output_path)
+        )
+
+        result_image = Image.open(result_path)
+        result_image.thumbnail((120, 90))
+
+        result_image_preview = ImageTk.PhotoImage(result_image)
+        main_canvas.create_image(525, 180, image=result_image_preview)
+
+    except Exception as error:
+        print(f"Error: {error}")
+
 
 # ==========================
 # Hover Bindings (Automated)
@@ -256,5 +318,7 @@ bind_hover_group(
     root_window=root
 )
 
+main_canvas.tag_bind("upload_area", "<Button-1>", handle_upload_click)
+main_canvas.tag_bind("remove_button", "<Button-1>", handle_remove_click)
 
 root.mainloop()
