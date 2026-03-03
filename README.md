@@ -1,9 +1,36 @@
 # BG-Remover
-a background remover 
-UI,UX will be designed using Figma. ( Done :) )
-the UI be created using Tkinter in python.  ( done :) )  
-the logic is gonna be written in python. (Done :) ), ( could be optimized )   
-the idea is an app that enables users to removing the background of the images. 
-I was in the Design stage.
-now I'm in the backend and front+back integration (Done : ) ).
+A desktop-based solution for instant image background removal.
 
+BG-Remover is a Python-powered application designed to isolate the subjects from their backgrounds. Built with a focus on user experience, it combines a modern UI designed in Figma with the reliable performance of Python's libraries (ecosystem).
+
+# Features
+Intuitive UI: Clean and modern interface crafted in Figma and implemented with Tkinter (python UI-lib).
+
+Local Processing: Keeps your images private by processing them on your machine.
+
+High Precision: Utilizes optimized Python logic for clean edges and subject detection.
+
+# Architecture
+The project follows a standard decoupled flow to ensure the UI remains responsive while the heavy lifting happens in the background.
+
+#  Roadmap & Optimization
+While the core functionality is integrated and working, current goals include:
+
+- Logic Optimization: if I found a better model for faster processing speeds I will switch to that.
+
+- Batch Processing: Adding the ability to drop multiple images at once.
+
+- Export Options: Supporting various file formats like  (WebP, BMP, TIFF, etc.). now only PNG. 
+
+# Getting Started :
+1. Install dependencies & Launch the app:
+
+```
+git clone https://git@github.com:katheri0/BG-Remover.git
+cd BG-Remover
+pip install -r requirements.txt
+python main.py
+
+```
+
+Note: On the very first run, the application will download the U2-Net model (~170MB). Please ensure you have an active internet connection.
