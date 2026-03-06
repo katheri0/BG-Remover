@@ -1,3 +1,4 @@
+# BG-R.py (font-end UI )
 import tkinter as tk
 from PIL import Image, ImageTk
 from pathlib import Path
@@ -100,7 +101,7 @@ main_canvas = tk.Canvas(
 )
 main_canvas.pack()
 
-selected_image_path = None
+selected_files_paths = []
 selected_image_preview = None
 result_image_preview = None
 
@@ -157,7 +158,8 @@ remove_text_id = main_canvas.create_text(
 
 main_canvas.create_text(
     350, 40,
-    text="output image path is the same as the input path",
+    text="output image path is the input image path \n"
+    "     same file,optional path is not ready. ",
     font=DEFAULT_FONT
 )
 
@@ -236,53 +238,72 @@ python_id, python_photo = load_canvas_image(
 # Upload Logic
 # ==========================
 
-def handle_upload_click(event=None):
-    global selected_image_path, selected_image_preview
 
-    file_path = filedialog.askopenfilename(
+def handle_upload_click(event=None):
+    global selected_files_paths, selected_image_preview
+
+    # Changed to askopenfilenames to allow multiple selection
+    file_paths = filedialog.askopenfilenames(
         filetypes=[("Image Files", "*.png *.jpg *.jpeg")]
     )
 
-    if not file_path:
+    if not file_paths:
         return
 
-    selected_image_path = file_path
-
-    image = Image.open(file_path)
+    selected_files_paths = list(file_paths) # Store the list
+    
+    # Show preview of the FIRST image in the batch
+    image = Image.open(selected_files_paths[0])
     image.thumbnail((120, 90))
-
     selected_image_preview = ImageTk.PhotoImage(image)
     main_canvas.create_image(175, 180, image=selected_image_preview)
+    
+    # Update text to show count
+    main_canvas.itemconfig(upload_text_id, text=f"{len(selected_files_paths)} files loaded")
 
 # ==========================
-# Remove Logic
+# Updated Remove Logic (Batch)
 # ==========================
-
 
 def handle_remove_click(event=None):
     global result_image_preview
 
-    if not selected_image_path:
+    if not selected_files_paths:
+        print("No images selected.")
         return
 
-    input_path = Path(selected_image_path)
-    output_path = input_path.parent / f"{input_path.stem}_no_bg.png"
+    # Create a status label on the canvas so the user knows it's working
+    status_text = main_canvas.create_text(350, 320, text="Processing...", fill="red", font=DEFAULT_FONT)
+    root.update_idletasks() # Force UI to show "Processing..."
 
-    try:
-        result_path = remove_background_from_image(
-            str(input_path),
-            str(output_path)
-        )
+    processed_count = 0
+    last_result_path = ""
 
-        result_image = Image.open(result_path)
+    for file_path in selected_files_paths:
+        input_path = Path(file_path)
+        output_path = input_path.parent / f"{input_path.stem}_no_bg.png"
+
+        try:
+            last_result_path = remove_background_from_image(
+                str(input_path),
+                str(output_path)
+            )
+            processed_count += 1
+            # Update status text per image
+            main_canvas.itemconfig(status_text, text=f"Processed {processed_count}/{len(selected_files_paths)}")
+            root.update() 
+            
+        except Exception as error:
+            print(f"Error processing {input_path.name}: {error}")
+
+    # Show the preview of the LAST processed image in the download area
+    if last_result_path:
+        result_image = Image.open(last_result_path)
         result_image.thumbnail((120, 90))
-
         result_image_preview = ImageTk.PhotoImage(result_image)
         main_canvas.create_image(525, 180, image=result_image_preview)
-
-    except Exception as error:
-        print(f"Error: {error}")
-
+        
+    main_canvas.itemconfig(status_text, text="Done!", fill="green")
 
 # ==========================
 # Hover Bindings (Automated)
