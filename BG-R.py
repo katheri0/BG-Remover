@@ -104,7 +104,7 @@ main_canvas.pack()
 selected_files_paths = []
 selected_image_preview = None
 result_image_preview = None
-
+output_directory = None
 # ==========================
 # Layout - Rectangles
 # ==========================
@@ -156,12 +156,12 @@ remove_text_id = main_canvas.create_text(
     font=("Arial", 14)
 )
 
-main_canvas.create_text(
-    350, 40,
-    text="output image path is the input image path \n"
-    "     same file,optional path is not ready. ",
-    font=DEFAULT_FONT
-)
+# main_canvas.create_text(
+#     350, 40,
+#     text="output image path is the input image path \n"
+#     "     same file,optional path is not ready. ",
+#     font=DEFAULT_FONT
+# )
 
 main_canvas.create_text(
     200, 430,
@@ -260,50 +260,65 @@ def handle_upload_click(event=None):
     
     # Update text to show count
     main_canvas.itemconfig(upload_text_id, text=f"{len(selected_files_paths)} files loaded")
+    
 
 # ==========================
-# Updated Remove Logic (Batch)
+# Setting a output path Logic 
+# ==========================
+
+def handle_download_area_click(event=None):
+    global output_directory
+    # Ask user to select a folder
+    selected_dir = filedialog.askdirectory(title="Select Output Folder")
+    
+    if selected_dir:
+        output_directory = selected_dir
+        # Update the text in the download area to show the folder name
+        folder_name = Path(selected_dir).name
+        main_canvas.itemconfig(download_icon_id, state='hidden') # Hide icon to show text
+        main_canvas.create_text(525, 200, text=f"Saving to: /{folder_name}", 
+                                font=("Arial", 14), fill="#333333", tags="dir_label")
+
+# ==========================
+# Updated Remove Logic (Batch + Using Optional Path)
 # ==========================
 
 def handle_remove_click(event=None):
     global result_image_preview
 
     if not selected_files_paths:
-        print("No images selected.")
         return
 
-    # Create a status label on the canvas so the user knows it's working
-    status_text = main_canvas.create_text(350, 320, text="Processing...", fill="red", font=DEFAULT_FONT)
+    status_tag = main_canvas.create_text(350, 320, text="Starting...", font=DEFAULT_FONT)
+    status_text = main_canvas.create_text(350, 300, text="Processing...", fill="red", font=DEFAULT_FONT)
     root.update_idletasks() # Force UI to show "Processing..."
-
     processed_count = 0
-    last_result_path = ""
 
-    for file_path in selected_files_paths:
+    for index, file_path in enumerate(selected_files_paths, 1):
         input_path = Path(file_path)
-        output_path = input_path.parent / f"{input_path.stem}_no_bg.png"
+        
+        # LOGIC: If output_directory is set, use it. Otherwise, use source folder.
+        if output_directory:
+            save_folder = Path(output_directory)
+        else:
+            save_folder = input_path.parent
+            
+        output_path = save_folder / f"{input_path.stem}_no_bg.png"
+# processed_count
+        main_canvas.itemconfig(status_tag, text=f"Processing {index}/{len(selected_files_paths)}...")
+        root.update()
 
         try:
-            last_result_path = remove_background_from_image(
-                str(input_path),
-                str(output_path)
-            )
+            result_path = remove_background_from_image(str(input_path), str(output_path))
             processed_count += 1
             # Update status text per image
             main_canvas.itemconfig(status_text, text=f"Processed {processed_count}/{len(selected_files_paths)}")
-            root.update() 
-            
-        except Exception as error:
-            print(f"Error processing {input_path.name}: {error}")
+            root.update_idletasks()
 
-    # Show the preview of the LAST processed image in the download area
-    if last_result_path:
-        result_image = Image.open(last_result_path)
-        result_image.thumbnail((120, 90))
-        result_image_preview = ImageTk.PhotoImage(result_image)
-        main_canvas.create_image(525, 180, image=result_image_preview)
-        
-    main_canvas.itemconfig(status_text, text="Done!", fill="green")
+        except Exception as e:
+            print(f"Error: {e}")
+
+    main_canvas.itemconfig(status_tag, text="Batch Complete!", fill="green")
 
 # ==========================
 # Hover Bindings (Automated)
@@ -341,5 +356,5 @@ bind_hover_group(
 
 main_canvas.tag_bind("upload_area", "<Button-1>", handle_upload_click)
 main_canvas.tag_bind("remove_button", "<Button-1>", handle_remove_click)
-
+main_canvas.tag_bind("download_area", "<Button-1>", handle_download_area_click)
 root.mainloop()
