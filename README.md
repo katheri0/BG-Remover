@@ -18,7 +18,9 @@ While the core functionality is integrated and working, current goals include:
 
 - Logic Optimization: if I found a better model for faster processing speeds I will switch to that.
 
-- Batch Processing: Adding the ability to drop multiple images at once.
+- Batch Processing: Adding the ability to drop multiple images at once.(Done)
+
+- Optional path for output images . 
 
 - Export Options: Supporting various file formats like  (WebP, BMP, TIFF, etc.). now only PNG. 
 
@@ -29,7 +31,7 @@ While the core functionality is integrated and working, current goals include:
 git clone https://git@github.com:katheri0/BG-Remover.git
 cd BG-Remover
 pip install -r requirements.txt
-python main.py
+python BG-R.py
 
 ```
 
