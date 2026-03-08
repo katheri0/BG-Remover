@@ -250,38 +250,49 @@ def handle_upload_click(event=None):
     if not file_paths:
         return
 
-    selected_files_paths = list(file_paths) # Store the list
-    
+    selected_files_paths = list(file_paths)  # Store the list
+
     # Show preview of the FIRST image in the batch
     image = Image.open(selected_files_paths[0])
     image.thumbnail((120, 90))
     selected_image_preview = ImageTk.PhotoImage(image)
     main_canvas.create_image(175, 180, image=selected_image_preview)
-    
+
     # Update text to show count
-    main_canvas.itemconfig(upload_text_id, text=f"{len(selected_files_paths)} files loaded")
-    
+    main_canvas.itemconfig(
+        upload_text_id, text=f"{len(selected_files_paths)} files loaded")
+
 
 # ==========================
-# Setting a output path Logic 
+# Setting a output path Logic
 # ==========================
 
 def handle_download_area_click(event=None):
     global output_directory
-    # Ask user to select a folder
+
     selected_dir = filedialog.askdirectory(title="Select Output Folder")
-    
+
     if selected_dir:
         output_directory = selected_dir
-        # Update the text in the download area to show the folder name
         folder_name = Path(selected_dir).name
-        main_canvas.itemconfig(download_icon_id, state='hidden') # Hide icon to show text
-        main_canvas.create_text(525, 200, text=f"Saving to: /{folder_name}", 
-                                font=("Arial", 14), fill="#333333", tags="dir_label")
+
+        main_canvas.itemconfig(download_icon_id, state='hidden')
+
+        # remove previous label
+        main_canvas.delete("dir_label")
+
+        main_canvas.create_text(
+            525, 200,
+            text=f"Saving to: /{folder_name}",
+            font=("Arial", 14),
+            fill="#333333",
+            tags="dir_label"
+        )
 
 # ==========================
 # Updated Remove Logic (Batch + Using Optional Path)
 # ==========================
+
 
 def handle_remove_click(event=None):
     global result_image_preview
@@ -289,30 +300,30 @@ def handle_remove_click(event=None):
     if not selected_files_paths:
         return
 
-    status_tag = main_canvas.create_text(350, 320, text="Starting...", font=DEFAULT_FONT)
-    status_text = main_canvas.create_text(350, 300, text="Processing...", fill="red", font=DEFAULT_FONT)
-    root.update_idletasks() # Force UI to show "Processing..."
+    status_tag = main_canvas.create_text(
+        350, 320, text="Starting...", font=DEFAULT_FONT)
+    root.update_idletasks()  # Force UI to show "Processing..."
     processed_count = 0
 
     for index, file_path in enumerate(selected_files_paths, 1):
         input_path = Path(file_path)
-        
         # LOGIC: If output_directory is set, use it. Otherwise, use source folder.
         if output_directory:
             save_folder = Path(output_directory)
         else:
             save_folder = input_path.parent
-            
+
         output_path = save_folder / f"{input_path.stem}_no_bg.png"
-# processed_count
-        main_canvas.itemconfig(status_tag, text=f"Processing {index}/{len(selected_files_paths)}...")
+        # processed_count
+        main_canvas.itemconfig(
+            status_tag, text=f"Processing {index}/{len(selected_files_paths)}...")
         root.update()
 
         try:
-            result_path = remove_background_from_image(str(input_path), str(output_path))
+            result_path = remove_background_from_image(
+                str(input_path), str(output_path))
             processed_count += 1
             # Update status text per image
-            main_canvas.itemconfig(status_text, text=f"Processed {processed_count}/{len(selected_files_paths)}")
             root.update_idletasks()
 
         except Exception as e:
@@ -323,6 +334,7 @@ def handle_remove_click(event=None):
 # ==========================
 # Hover Bindings (Automated)
 # ==========================
+
 
 bind_hover_group(
     canvas=main_canvas,

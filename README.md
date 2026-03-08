@@ -20,7 +20,7 @@ While the core functionality is integrated and working, current goals include:
 
 - Batch Processing: Adding the ability to drop multiple images at once.(Done)
 
-- Optional path for output images . 
+- Optional path for output images . (Done)
 
 - Export Options: Supporting various file formats like  (WebP, BMP, TIFF, etc.). now only PNG. 
 
