@@ -138,6 +138,18 @@ remove_button_id = create_rounded_rectangle(
     width=2,
     dash=(10, 2)
 )
+# 540, 300,   # left_x, top_y
+# 650, 340,   # right_x, bottom_y
+format_button_id = create_rounded_rectangle(
+    main_canvas,
+    535, 315,   # left_x, top_y
+    630, 355,   # right_x, bottom_y
+    corner_radius=40,
+    fill=REMOVE_BUTTON_DEFAULT_COLOR,
+    outline="black",
+    width=2,
+    dash=(10, 2)
+)
 
 
 # ==========================
@@ -184,6 +196,11 @@ main_canvas.create_text(
 )
 
 
+format_text_id = main_canvas.create_text(
+    570, 335,
+    text="Format",
+    font=("Arial", 10)
+)
 # ==========================
 # Image Assets
 # ==========================
@@ -234,6 +251,13 @@ python_id, python_photo = load_canvas_image(
     height=24
 )
 
+dropdown_photo = load_canvas_image(
+    main_canvas,
+    "assets/img/Format.png",
+    610, 338,
+    width=24,
+    height=16
+)
 # ==========================
 # Upload Logic
 # ==========================
@@ -335,6 +359,16 @@ def handle_remove_click(event=None):
 # Hover Bindings (Automated)
 # ==========================
 
+
+bind_hover_group(
+    canvas=main_canvas,
+    tag_name="Format_button",
+    rectangle_id=format_button_id,
+    grouped_item_ids=[format_button_id, format_text_id],
+    default_color=REMOVE_BUTTON_DEFAULT_COLOR,
+    hover_color=REMOVE_BUTTON_HOVER_COLOR,
+    root_window=root
+)
 
 bind_hover_group(
     canvas=main_canvas,
