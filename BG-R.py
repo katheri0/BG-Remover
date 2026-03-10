@@ -101,10 +101,16 @@ main_canvas = tk.Canvas(
 )
 main_canvas.pack()
 
+# ==========================
+# globel - variables
+# ==========================
 selected_files_paths = []
 selected_image_preview = None
 result_image_preview = None
 output_directory = None
+# export_format = "png"
+
+
 # ==========================
 # Layout - Rectangles
 # ==========================
@@ -354,6 +360,29 @@ def handle_remove_click(event=None):
             print(f"Error: {e}")
 
     main_canvas.itemconfig(status_tag, text="Batch Complete!", fill="green")
+
+# ==========================
+# Format btn Logic -
+# ==========================
+
+# def show_format_menu(event=None):
+#     format_menu = tk.Menu(root, tearoff=0)
+
+#     supported_formats = [
+#         ("PNG", "png"),
+#         ("WebP", "webp"),
+#         ("BMP", "bmp"),
+#         ("TIFF", "tiff"),
+#         ("JPEG", "jpg")
+#     ]
+
+#     for label, ext in supported_formats:
+#         format_menu.add_command(
+#             label=label,
+#             command=lambda extension=ext: set_export_format(extension)
+#         )
+
+#     format_menu.post(event.x_root, event.y_root)
 
 # ==========================
 # Hover Bindings (Automated)
