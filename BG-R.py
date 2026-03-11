@@ -108,8 +108,7 @@ selected_files_paths = []
 selected_image_preview = None
 result_image_preview = None
 output_directory = None
-# export_format = "png"
-
+selected_export_format = "png"
 
 # ==========================
 # Layout - Rectangles
@@ -322,7 +321,7 @@ def handle_download_area_click(event=None):
 # ==========================
 # Updated Remove Logic (Batch + Using Optional Path)
 # ==========================
-
+#  output_path 
 
 def handle_remove_click(event=None):
     global result_image_preview
@@ -343,7 +342,7 @@ def handle_remove_click(event=None):
         else:
             save_folder = input_path.parent
 
-        output_path = save_folder / f"{input_path.stem}_no_bg.png"
+        output_path = save_folder / f"{input_path.stem}_no_bg.{selected_export_format}"
         # processed_count
         main_canvas.itemconfig(
             status_tag, text=f"Processing {index}/{len(selected_files_paths)}...")
@@ -351,7 +350,11 @@ def handle_remove_click(event=None):
 
         try:
             result_path = remove_background_from_image(
-                str(input_path), str(output_path))
+                str(input_path),
+                str(output_path),
+                selected_export_format
+            )
+
             processed_count += 1
             # Update status text per image
             root.update_idletasks()
@@ -362,27 +365,35 @@ def handle_remove_click(event=None):
     main_canvas.itemconfig(status_tag, text="Batch Complete!", fill="green")
 
 # ==========================
-# Format btn Logic -
+# Format btn Logic
 # ==========================
 
-# def show_format_menu(event=None):
-#     format_menu = tk.Menu(root, tearoff=0)
+def show_format_menu(event=None):
+    format_menu = tk.Menu(root, tearoff=0)
 
-#     supported_formats = [
-#         ("PNG", "png"),
-#         ("WebP", "webp"),
-#         ("BMP", "bmp"),
-#         ("TIFF", "tiff"),
-#         ("JPEG", "jpg")
-#     ]
+    supported_formats = [
+        ("PNG", "png"),
+        ("WebP", "webp"),
+        ("BMP", "bmp"),
+        ("TIFF", "tiff"),
+        ("JPEG", "jpg")
+    ]
 
-#     for label, ext in supported_formats:
-#         format_menu.add_command(
-#             label=label,
-#             command=lambda extension=ext: set_export_format(extension)
-#         )
+    for label, ext in supported_formats:
+        format_menu.add_command(
+            label=label,
+            command=lambda extension=ext: set_selected_export_format(extension)
+        )
 
-#     format_menu.post(event.x_root, event.y_root)
+    format_menu.post(event.x_root, event.y_root)
+
+def set_selected_export_format(extension: str):
+    global selected_export_format
+
+    selected_export_format = extension
+
+    # Update the button text so user sees the selection
+    main_canvas.itemconfig(format_text_id, text=extension.upper())
 
 # ==========================
 # Hover Bindings (Automated)
@@ -432,4 +443,5 @@ bind_hover_group(
 main_canvas.tag_bind("upload_area", "<Button-1>", handle_upload_click)
 main_canvas.tag_bind("remove_button", "<Button-1>", handle_remove_click)
 main_canvas.tag_bind("download_area", "<Button-1>", handle_download_area_click)
+main_canvas.tag_bind("Format_button", "<Button-1>", show_format_menu)
 root.mainloop()

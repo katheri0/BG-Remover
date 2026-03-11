@@ -7,7 +7,8 @@ from PIL import Image
 
 def remove_background_from_image(
     input_image_path: str,
-    output_image_path: str
+    output_image_path: str,
+    export_format: str = "PNG"
 ) -> str:
     """
     Removes the background from an image and saves the result.
@@ -33,7 +34,7 @@ def remove_background_from_image(
     try:
         original_image = Image.open(input_path)
         processed_image = remove(original_image)
-        processed_image.save(output_path)
+        processed_image.save(output_path, format=export_format.upper())
 
     except Exception as error:
         raise RuntimeError(f"Background removal failed: {error}")

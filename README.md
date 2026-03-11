@@ -22,7 +22,7 @@ While the core functionality is integrated and working, current goals include:
 
 - Optional path for output images . (Done)
 
-- Export Options: Supporting various file formats like  (WebP, BMP, TIFF, etc.). now only PNG. 
+- Export Options: Supporting various file formats like  (WebP, BMP, TIFF, etc.). now only PNG. (done)
 
 planning this feature :
 ```
