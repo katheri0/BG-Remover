@@ -256,7 +256,7 @@ python_id, python_photo = load_canvas_image(
     height=24
 )
 
-dropdown_photo = load_canvas_image(
+dropdown_photo_id ,dropdown_photo = load_canvas_image(
     main_canvas,
     "assets/img/Format.png",
     610, 338,
@@ -404,7 +404,7 @@ bind_hover_group(
     canvas=main_canvas,
     tag_name="Format_button",
     rectangle_id=format_button_id,
-    grouped_item_ids=[format_button_id, format_text_id],
+    grouped_item_ids=[format_button_id, format_text_id, dropdown_photo_id],
     default_color=REMOVE_BUTTON_DEFAULT_COLOR,
     hover_color=REMOVE_BUTTON_HOVER_COLOR,
     root_window=root
