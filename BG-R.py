@@ -84,7 +84,7 @@ root = tk.Tk()
 root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 root.title("BG-Remover")
 root.configure(bg=WINDOW_BACKGROUND_COLOR)
-
+root.resizable(False, False)
 title_label = tk.Label(
     root,
     text="BG-Remover",
