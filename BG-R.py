@@ -84,7 +84,11 @@ root = tk.Tk()
 root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 root.title("BG-Remover")
 root.configure(bg=WINDOW_BACKGROUND_COLOR)
+
+# no zoom-in or out 
 root.resizable(False, False)
+root.attributes("-toolwindow", False)
+
 title_label = tk.Label(
     root,
     text="BG-Remover",
@@ -369,7 +373,16 @@ def handle_remove_click(event=None):
 # ==========================
 
 def show_format_menu(event=None):
-    format_menu = tk.Menu(root, tearoff=0)
+
+    format_menu = tk.Menu(
+        root,
+        tearoff=0,
+        bg="#FFF0CF",
+        fg="black",
+        activebackground="#F7D88A",
+        activeforeground="black",
+        font=("Arial", 10)
+    )
 
     supported_formats = [
         ("PNG", "png"),
