@@ -85,7 +85,7 @@ root.geometry(f"{WINDOW_WIDTH}x{WINDOW_HEIGHT}")
 root.title("BG-Remover")
 root.configure(bg=WINDOW_BACKGROUND_COLOR)
 
-# no zoom-in or out 
+# no zoom-in or out
 root.resizable(False, False)
 root.attributes("-toolwindow", False)
 
@@ -206,9 +206,9 @@ main_canvas.create_text(
 
 
 format_text_id = main_canvas.create_text(
-    570, 335,
+    568, 335,
     text="Format",
-    font=("Arial", 10)
+    font=("Arial", 11)
 )
 # ==========================
 # Image Assets
@@ -255,12 +255,12 @@ github_id, github_photo = load_canvas_image(
 python_id, python_photo = load_canvas_image(
     main_canvas,
     "assets/img/python.png",
-    355, 430,
-    width=24,
-    height=24
+    358, 430,
+    width=30,
+    height=30
 )
 
-dropdown_photo_id ,dropdown_photo = load_canvas_image(
+dropdown_photo_id, dropdown_photo = load_canvas_image(
     main_canvas,
     "assets/img/Format.png",
     610, 338,
@@ -325,7 +325,8 @@ def handle_download_area_click(event=None):
 # ==========================
 # Updated Remove Logic (Batch + Using Optional Path)
 # ==========================
-#  output_path 
+#  output_path
+
 
 def handle_remove_click(event=None):
     global result_image_preview
@@ -346,7 +347,8 @@ def handle_remove_click(event=None):
         else:
             save_folder = input_path.parent
 
-        output_path = save_folder / f"{input_path.stem}_no_bg.{selected_export_format}"
+        output_path = save_folder / \
+            f"{input_path.stem}_no_bg.{selected_export_format}"
         # processed_count
         main_canvas.itemconfig(
             status_tag, text=f"Processing {index}/{len(selected_files_paths)}...")
@@ -371,6 +373,7 @@ def handle_remove_click(event=None):
 # ==========================
 # Format btn Logic
 # ==========================
+
 
 def show_format_menu(event=None):
 
@@ -399,6 +402,7 @@ def show_format_menu(event=None):
         )
 
     format_menu.post(event.x_root, event.y_root)
+
 
 def set_selected_export_format(extension: str):
     global selected_export_format
