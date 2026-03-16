@@ -214,6 +214,10 @@ format_text_id = main_canvas.create_text(
 # Image Assets
 # ==========================
 
+# 16 px
+# 24 px
+# 32 px
+# 48 px
 arrow_id, arrow_photo = load_canvas_image(
     main_canvas,
     "assets/img/arrow.png",
@@ -240,8 +244,8 @@ whatsapp_id, whatsapp_photo = load_canvas_image(
     main_canvas,
     "assets/img/whatsapp.png",
     497, 430,
-    width=24,
-    height=24
+    width=28,
+    height=28
 )
 
 github_id, github_photo = load_canvas_image(
@@ -254,10 +258,10 @@ github_id, github_photo = load_canvas_image(
 
 python_id, python_photo = load_canvas_image(
     main_canvas,
-    "assets/img/python.png",
+    "assets/img/python.jpg",
     358, 430,
-    width=30,
-    height=30
+    width=28,
+    height=28
 )
 
 dropdown_photo_id, dropdown_photo = load_canvas_image(
