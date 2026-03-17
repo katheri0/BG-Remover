@@ -24,25 +24,6 @@ While the core functionality is integrated and working, current goals include:
 
 - Export Options: Supporting various file formats like  (WebP, BMP, TIFF, etc.). now only PNG. (done)
 
-planning this feature :
-```
-User clicks the Format button
-        ↓
-UI shows the format options
-        ↓
-User selects WebP (for example)
-        ↓
-UI stores: selected_export_format = "WEBP"
-        ↓
-User clicks Remove
-        ↓
-UI calls the backend
-        ↓
-remove_background_from_image(input, output, "WEBP")
-        ↓
-Backend saves the image in WebP
-
-```
 #### Getting Started :
 1. Install dependencies & Launch the app:
 

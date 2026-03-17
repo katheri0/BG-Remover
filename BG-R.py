@@ -177,12 +177,6 @@ remove_text_id = main_canvas.create_text(
     font=("Arial", 14)
 )
 
-# main_canvas.create_text(
-#     350, 40,
-#     text="output image path is the input image path \n"
-#     "     same file,optional path is not ready. ",
-#     font=DEFAULT_FONT
-# )
 
 main_canvas.create_text(
     200, 430,
@@ -215,7 +209,7 @@ format_text_id = main_canvas.create_text(
 # ==========================
 
 # 16 px
-# 24 px
+# 24 px 12px
 # 32 px
 # 48 px
 arrow_id, arrow_photo = load_canvas_image(
@@ -228,32 +222,32 @@ upload_icon_id, upload_icon_photo = load_canvas_image(
     main_canvas,
     "assets/img/Logo.png",
     175, 200,
-    width=40,
-    height=40
+    width=48,
+    height=48
 )
 
 download_icon_id, download_icon_photo = load_canvas_image(
     main_canvas,
     "assets/img/download_icon.png",
     525, 200,
-    width=50,
-    height=35
+    width=66,
+    height=45
 )
 
 whatsapp_id, whatsapp_photo = load_canvas_image(
     main_canvas,
     "assets/img/whatsapp.png",
     497, 430,
-    width=28,
-    height=28
+    width=32,
+    height=32
 )
 
 github_id, github_photo = load_canvas_image(
     main_canvas,
     "assets/img/Github.png",
-    634, 430,
-    width=24,
-    height=24
+    630, 430,
+    width=32,
+    height=32
 )
 
 python_id, python_photo = load_canvas_image(
@@ -268,7 +262,7 @@ dropdown_photo_id, dropdown_photo = load_canvas_image(
     main_canvas,
     "assets/img/Format.png",
     610, 338,
-    width=24,
+    width=28,
     height=16
 )
 # ==========================
