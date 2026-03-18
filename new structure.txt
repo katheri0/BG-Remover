@@ -1,0 +1,14 @@
+BG-R/
+│
+├── BG-R.py                  ← entry point
+├── ui/
+│   ├── __init__.py
+│   ├── layout.py            ← rectangles + static UI
+│   ├── components.py        ← reusable UI helpers
+│   ├── handlers.py          ← click logic (upload/remove/format)
+│   └── state.py             ← shared state (selected files, format)
+│
+├── services/
+│   └── background_removal_service.py
+│
+└── assets/
