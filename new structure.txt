@@ -1,6 +1,7 @@
-BG-R/
+├── assets/img
 │
-├── BG-R.py                  ← entry point
+├──BGR/
+├── main.py                  ← entry point
 ├── ui/
 │   ├── __init__.py
 │   ├── layout.py            ← rectangles + static UI
@@ -10,5 +11,3 @@ BG-R/
 │
 ├── services/
 │   └── background_removal_service.py
-│
-└── assets/

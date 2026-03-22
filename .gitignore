@@ -4,6 +4,11 @@ __pycache__/
 *.pyd
 
 # dfjln
-.vscode/
-*.json
-settings.json
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

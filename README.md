@@ -31,7 +31,7 @@ While the core functionality is integrated and working, current goals include:
 git clone https://git@github.com:katheri0/BG-Remover.git
 cd BG-Remover
 pip install -r requirements.txt
-python BG-R.py
+python main.py
 
 ```
 
