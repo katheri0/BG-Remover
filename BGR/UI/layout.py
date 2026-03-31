@@ -13,12 +13,12 @@ def build_layout(root):
     download_area_id = components.create_rounded_rectangle(canvas, 400, 100, 650, 300, corner_radius=40, fill=state.UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR, outline="black", width=2, dash=(10, 2))
     remove_button_id = components.create_rounded_rectangle(canvas, 270, 350, 430, 400, corner_radius=40, fill=state.REMOVE_BUTTON_DEFAULT_COLOR, outline="black", width=2, dash=(10, 2))
     format_button_id = components.create_rounded_rectangle(canvas, 535, 315, 630, 355, corner_radius=40, fill=state.REMOVE_BUTTON_DEFAULT_COLOR, outline="black", width=2, dash=(10, 2))
-
+    convertor_button_id = components.create_rounded_rectangle(canvas, 40, 350, 170, 400, corner_radius=40, fill=state.REMOVE_BUTTON_DEFAULT_COLOR, outline="black", width=2, dash=(10, 2))
     # Text
     upload_text_id = canvas.create_text(175, 260, text="Upload Image", font=("Arial", 16))
     remove_text_id = canvas.create_text(353, 375, text="Remove", font=("Arial", 14))
     format_text_id = canvas.create_text(568, 335, text="Format", font=("Arial", 11))
-    
+    convertor_text_id = canvas.create_text(105, 375, text="convertor", font=("Arial", 14))
     # Footer Text
     canvas.create_text(200, 430, text="developed by Katheri Saleh using", font=state.DEFAULT_FONT)
     canvas.create_text(30, 430, text="</>", font=("Arial", 25))
@@ -39,6 +39,7 @@ def build_layout(root):
     components.bind_hover_group(canvas, "upload_area", upload_area_id, [upload_area_id, upload_text_id], state.UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR, state.UPLOAD_DOWNLOAD_AREA_HOVER_COLOR, root)
     components.bind_hover_group(canvas, "download_area", download_area_id, [download_area_id, download_icon_id], state.UPLOAD_DOWNLOAD_AREA_DEFAULT_COLOR, state.UPLOAD_DOWNLOAD_AREA_HOVER_COLOR, root)
     components.bind_hover_group(canvas, "remove_button", remove_button_id, [remove_button_id, remove_text_id], state.REMOVE_BUTTON_DEFAULT_COLOR, state.REMOVE_BUTTON_HOVER_COLOR, root)
+    components.bind_hover_group(canvas, "convertor", convertor_button_id, [convertor_button_id, convertor_text_id], state.REMOVE_BUTTON_DEFAULT_COLOR, state.REMOVE_BUTTON_HOVER_COLOR, root)
 
     # Clicks
     canvas.tag_bind("upload_area", "<Button-1>", lambda e: handlers.handle_upload_click(canvas, upload_text_id))
