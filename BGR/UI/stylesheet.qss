@@ -1,0 +1,103 @@
+/* Main Window Background */
+QMainWindow {
+    background-color: #FFFFFF;
+}
+
+/* General Labels */
+QLabel {
+    color: #333333;
+}
+
+QLabel#titleLabel {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+/* Main Action Buttons (Upload / Download / Convert areas) 
+   We will treat the large areas as QPushButtons or custom QFrames */
+QPushButton, QToolButton {
+    background-color: #FFF0CF;
+    border: 2px dashed #000000;
+    border-radius: 40px;
+    color: #333333;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+QPushButton:hover, QToolButton:hover {
+    background-color: #FDE6A8;
+}
+
+QPushButton:pressed, QToolButton:pressed {
+    background-color: #F7D88A;
+}
+
+/* Specific styling for smaller buttons like Remove, Convertor */
+QPushButton#actionButton {
+    background-color: #FFF0CF;
+    border: 2px dashed #000000;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+QPushButton#actionButton:hover {
+    background-color: #F7D88A;
+}
+
+QPushButton#actionButton:pressed {
+    background-color: #EAC976;
+}
+
+/* Format ComboBox */
+QComboBox {
+    background-color: #FFF0CF;
+    border: 2px dashed #000000;
+    border-radius: 20px;
+    padding: 5px 30px 5px 15px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #333333;
+}
+
+QComboBox:hover {
+    background-color: #F7D88A;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 28px;
+    border: none;
+}
+
+QComboBox::down-arrow {
+    image: url(assets/img/Format.png);
+    width: 24px;
+    height: 18px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #FFF0CF;
+    selection-background-color: #F7D88A;
+    selection-color: #333333;
+    border: 2px dashed #000000;
+    border-radius: 10px;
+    outline: none;
+    padding: 2px;
+}
+
+QComboBox QAbstractItemView::item {
+    min-height: 25px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: #F7D88A;
+}
+
+/* Disable focus rectangle on buttons */
+QPushButton:focus, QToolButton:focus, QComboBox:focus {
+    outline: none;
+}
