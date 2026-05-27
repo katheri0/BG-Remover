@@ -1,8 +1,30 @@
 # background_removal_service.py
 
 from pathlib import Path
-from rembg import remove
+from rembg import remove, new_session
 from PIL import Image
+import onnxruntime as ort
+
+# Detect available ONNX Runtime providers
+available_providers = ort.get_available_providers()
+
+# Prioritize GPU/accelerated providers if they are available
+preferred_providers = [
+    'TensorrtExecutionProvider',
+    'CUDAExecutionProvider',
+    'DmlExecutionProvider',
+    'CoreMLExecutionProvider',
+]
+
+# Keep only the available ones in priority order
+providers = [p for p in preferred_providers if p in available_providers]
+
+# Always append CPU as a safe fallback
+if 'CPUExecutionProvider' not in providers:
+    providers.append('CPUExecutionProvider')
+
+# Create a shared session to improve performance on subsequent calls
+_session = new_session('u2net', providers=providers)
 
 
 def remove_background_from_image(
@@ -33,7 +55,7 @@ def remove_background_from_image(
 
     try:
         original_image = Image.open(input_path)
-        processed_image = remove(original_image)
+        processed_image = remove(original_image, session=_session)
         processed_image.save(output_path, format=export_format.upper())
 
     except Exception as error:
