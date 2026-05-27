@@ -44,8 +44,8 @@ class MainWindow(QMainWindow):
         # --- Left Side ---
         left_layout = QVBoxLayout()
         
-        self.upload_btn = QPushButton("")
-        self.upload_btn.setIcon(QIcon(str(ASSETS_DIR / "add.png")))
+        self.upload_btn = QPushButton("Upload Image\n\n\n\n")
+        self.upload_btn.setIcon(QIcon(str(ASSETS_DIR / "Logo.png")))
         self.upload_btn.setIconSize(QSize(48, 48))
         self.upload_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.upload_btn.clicked.connect(self.handle_upload)
