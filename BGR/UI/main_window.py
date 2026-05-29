@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QIcon, QPixmap
 
-from UI.worker import BackgroundRemovalWorker
+from UI.worker import BackgroundRemovalWorker, ImageConversionWorker
 
 ASSETS_DIR = Path(__file__).resolve().parent.parent.parent / "assets" / "img"
 
@@ -51,9 +51,10 @@ class MainWindow(QMainWindow):
         self.upload_btn.clicked.connect(self.handle_upload)
         
         left_buttons_layout = QHBoxLayout()
-        self.convertor_btn = QPushButton("Convertor")
+        self.convertor_btn = QPushButton("Convert")
         self.convertor_btn.setObjectName("actionButton")
         self.convertor_btn.setFixedHeight(50)
+        self.convertor_btn.clicked.connect(self.handle_convert)
         
         self.remove_btn = QPushButton("Remove")
         self.remove_btn.setObjectName("actionButton")
@@ -159,28 +160,51 @@ class MainWindow(QMainWindow):
         export_format = self.format_combo.currentText().lower()
         
         self.remove_btn.setEnabled(False)
+        self.convertor_btn.setEnabled(False)
         self.upload_btn.setEnabled(False)
-        self.status_label.setText("Starting...")
+        self.status_label.setText("Starting removal...")
         self.status_label.setStyleSheet("color: #333333;")
         
         self.worker = BackgroundRemovalWorker(self.selected_files_paths, self.output_directory, export_format)
         self.worker.progress.connect(self.update_progress)
-        self.worker.finished.connect(self.removal_finished)
-        self.worker.error.connect(self.removal_error)
+        self.worker.finished.connect(self.action_finished)
+        self.worker.error.connect(self.action_error)
+        self.worker.start()
+
+    def handle_convert(self):
+        if not self.selected_files_paths:
+            self.status_label.setText("No images uploaded!")
+            self.status_label.setStyleSheet("color: red;")
+            return
+            
+        export_format = self.format_combo.currentText().lower()
+        
+        self.convertor_btn.setEnabled(False)
+        self.remove_btn.setEnabled(False)
+        self.upload_btn.setEnabled(False)
+        self.status_label.setText("Starting conversion...")
+        self.status_label.setStyleSheet("color: #333333;")
+        
+        self.worker = ImageConversionWorker(self.selected_files_paths, self.output_directory, export_format)
+        self.worker.progress.connect(self.update_progress)
+        self.worker.finished.connect(self.action_finished)
+        self.worker.error.connect(self.action_error)
         self.worker.start()
 
     def update_progress(self, current, total):
         self.status_label.setText(f"Processing {current}/{total}...")
         
-    def removal_finished(self, message):
+    def action_finished(self, message):
         self.status_label.setText(message)
         self.status_label.setStyleSheet("color: green;")
         self.remove_btn.setEnabled(True)
+        self.convertor_btn.setEnabled(True)
         self.upload_btn.setEnabled(True)
         
-    def removal_error(self, message):
+    def action_error(self, message):
         self.status_label.setText("An error occurred.")
         self.status_label.setStyleSheet("color: red;")
         self.remove_btn.setEnabled(True)
+        self.convertor_btn.setEnabled(True)
         self.upload_btn.setEnabled(True)
         print(message)
